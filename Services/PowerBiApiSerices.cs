@@ -79,16 +79,6 @@ namespace PowerBiEmbed.Services
 
                 datasetTokenRequests.Add(new GenerateTokenRequestV2Dataset(dataset.Id));
             }
-            // Create effective identity for the first dataset
-            var datasetId = datasets[0].Id.ToString();
-            var effectiveIdentities = new List<EffectiveIdentity>() {
-    new EffectiveIdentity(
-        username: _configuration["CurrentUser:UserName"],
-        roles: new List<string> {"AppUser"},
-        datasets: new List<string> {datasetId})
-};
-
-
 
             // Generate token request for the workspace
             var workspaceRequests = new GenerateTokenRequestV2TargetWorkspace[] {
@@ -99,8 +89,7 @@ namespace PowerBiEmbed.Services
             var tokenRequest = new GenerateTokenRequestV2(
                 reports: reportTokenRequests,
                 datasets: datasetTokenRequests,
-                targetWorkspaces: workspaceRequests,
-                identities: effectiveIdentities
+                targetWorkspaces: workspaceRequests
             );
 
             // Generate the embed token
